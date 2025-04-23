@@ -1,0 +1,501 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 11%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 15%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 15%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 0 0% 11%;
+    --primary-foreground: 0 0% 95%;
+
+    --secondary: 42 100% 70%;
+    --secondary-foreground: 0 0% 11%;
+
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 33 89% 80%;
+    --accent-foreground: 0 0% 11%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 33 89% 80%;
+
+    --radius: 0.5rem;
+
+    --font-sans: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+      Arial, "Noto Sans", sans-serif;
+    --font-serif: var(--font-serif), "Times New Roman", Times, serif;
+
+    /* Hardcoded button color for fallback */
+    --button-color: #ffd166;
+  }
+
+  .dark {
+    --background: 0 0% 11%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 15%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 15%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 0 0% 11%;
+    --primary-foreground: 0 0% 95%;
+
+    --secondary: 33 89% 80%;
+    --secondary-foreground: 0 0% 11%;
+
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 33 89% 80%;
+    --accent-foreground: 0 0% 11%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 33 89% 80%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    background-color: #1b1b1b;
+    color: #f2f2f2;
+    font-feature-settings: "ss01" 1, "ss02" 1, "cv01" 1, "cv03" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-foreground font-semibold;
+    font-family: var(--font-serif);
+    color: #f2f2f2;
+  }
+
+  /* Force button color for specific elements */
+  .text-primary {
+    color: hsl(var(--primary)) !important;
+    color: #1b1b1b !important;
+  }
+
+  .bg-primary {
+    background-color: hsl(var(--primary)) !important;
+    background-color: #1b1b1b !important;
+  }
+
+  .border-primary {
+    border-color: hsl(var(--primary)) !important;
+    border-color: #1b1b1b !important;
+  }
+
+  .shadow-primary {
+    --tw-shadow-color: hsl(var(--primary)) !important;
+    --tw-shadow-color: #1b1b1b !important;
+  }
+
+  /* Force button color for secondary elements */
+  .text-secondary {
+    color: hsl(var(--secondary)) !important;
+    color: var(--button-color) !important;
+  }
+
+  .bg-secondary {
+    background-color: hsl(var(--secondary)) !important;
+    background-color: var(--button-color) !important;
+  }
+}
+
+@layer components {
+  .contact-gradient {
+    background: linear-gradient(135deg, hsl(0 0% 10%) 0%, hsl(0 0% 15%) 50%, hsl(0 0% 10%) 100%);
+    position: relative;
+  }
+
+  .contact-gradient::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 0%, hsla(0, 0%, 95%, 0.08) 0%, hsla(0, 0%, 95%, 0) 70%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .contact-gradient > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .button-primary {
+    background-color: #ffd166 !important;
+    color: #1b1b1b !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  }
+
+  .button-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(252, 198, 158, 0.3);
+  }
+
+  /* Override any shadcn button variants */
+  .button-primary.bg-primary,
+  .button-primary.bg-secondary,
+  .button-primary.bg-accent,
+  [data-theme="dark"] .button-primary,
+  [data-theme="light"] .button-primary {
+    background-color: #ffd166 !important;
+    color: #1b1b1b !important;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Cursor effects */
+  .cursor-highlight {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(252, 198, 158, 0.5);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: width 0.3s, height 0.3s;
+  }
+
+  /* Custom container with consistent margins */
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Animation classes */
+  .fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+
+  .fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Custom outline button that works on touch devices */
+  .outline-button {
+    border-color: #ffd166 !important;
+    color: #ffd166 !important;
+    background-color: transparent !important;
+  }
+
+  .outline-button:hover {
+    background-color: rgba(255, 209, 102, 0.1) !important;
+  }
+
+  .touch-device .outline-button:hover {
+    background-color: transparent !important;
+  }
+
+  /* Add card lift animation */
+  @keyframes card-lift {
+    0% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-8px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-card-lift {
+    animation: card-lift 0.8s ease-in-out;
+  }
+
+  /* Add this new CSS class for the animated underline effect */
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #ffd166;
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+}
+
+/* Touch device styles - comprehensive overrides for all hover effects */
+.touch-device * {
+  transition-property: none !important;
+}
+
+/* Disable ALL hover effects on touch devices */
+.touch-device *:hover,
+.touch-device *:active,
+.touch-device *:focus {
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  text-shadow: none !important;
+  border-color: inherit !important;
+  outline: none !important;
+}
+
+/* Specific button overrides */
+.touch-device button:hover,
+.touch-device a:hover,
+.touch-device .button:hover,
+.touch-device .btn:hover,
+.touch-device [class*="button"]:hover,
+.touch-device [class*="btn"]:hover {
+  background-color: inherit !important;
+  color: inherit !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Preserve button-primary styling */
+.touch-device .button-primary {
+  background-color: #ffd166 !important;
+  color: #1b1b1b !important;
+}
+
+.touch-device .button-primary:hover {
+  background-color: #ffd166 !important;
+  color: #1b1b1b !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Preserve outline button styling */
+.touch-device button[variant="outline"],
+.touch-device .border-\[\#FFD166\].text-\[\#FFD166\] {
+  border-color: #ffd166 !important;
+  color: #ffd166 !important;
+}
+
+.touch-device button[variant="outline"]:hover,
+.touch-device .border-\[\#FFD166\].text-\[\#FFD166\]:hover {
+  background-color: transparent !important;
+  border-color: #ffd166 !important;
+  color: #ffd166 !important;
+}
+
+/* Override Tailwind hover utilities */
+.touch-device .hover\:bg-\[\#FFD166\]\/10:hover,
+.touch-device .hover\:bg-\[\#FFD166\]\/20:hover,
+.touch-device .hover\:bg-\[\#FFD166\]\/30:hover,
+.touch-device .hover\:bg-\[\#FFD166\]\/40:hover,
+.touch-device .hover\:bg-\[\#FFD166\]\/50:hover {
+  background-color: transparent !important;
+}
+
+.touch-device .hover\:text-\[\#FFD166\]:hover {
+  color: inherit !important;
+}
+
+.touch-device .hover\:border-\[\#FFD166\]\/30:hover {
+  border-color: rgba(255, 209, 102, 0.3) !important;
+}
+
+/* Disable group hover effects */
+.touch-device .group:hover * {
+  transform: none !important;
+  scale: 1 !important;
+  rotate: none !important;
+}
+
+.touch-device .group-hover\:scale-105,
+.touch-device .group-hover\:rotate-180 {
+  transform: none !important;
+}
+
+/* Ensure animations still work */
+.touch-device .fade-in-up {
+  transition: opacity 1s ease, transform 1s ease !important;
+}
+
+.touch-device .fade-in-up.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Completely revised vertical carousel styles for continuous looping */
+
+/* Container for the entire carousel */
+.vertical-carousel-container {
+  position: relative;
+  height: 500px;
+  width: 100%;
+  overflow: hidden;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Carousel track - this is what moves */
+.carousel-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Reduced from 24px */
+  padding: 16px;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+/* Left track moves upward */
+.carousel-track-left {
+  animation: continuousScrollUp 30s linear infinite;
+}
+
+/* Right track moves downward */
+.carousel-track-right {
+  animation: continuousScrollDown 30s linear infinite;
+}
+
+/* Individual carousel items */
+.carousel-item {
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
+  margin-bottom: 12px; /* Reduced from 24px */
+}
+
+.carousel-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Continuous scroll animations with smoother easing */
+@keyframes continuousScrollUp {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -50%, 0);
+  }
+}
+
+@keyframes continuousScrollDown {
+  0% {
+    transform: translate3d(0, -50%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Make sure the animation still works on touch devices */
+.touch-device .carousel-track-left {
+  animation: continuousScrollUp 30s linear infinite !important;
+}
+
+.touch-device .carousel-track-right {
+  animation: continuousScrollDown 30s linear infinite !important;
+}
+
+/* Add a subtle gradient overlay at the top and bottom of the carousel */
+.vertical-carousel-container::before,
+.vertical-carousel-container::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.vertical-carousel-container::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(27, 27, 27, 1), rgba(27, 27, 27, 0));
+}
+
+.vertical-carousel-container::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(27, 27, 27, 1), rgba(27, 27, 27, 0));
+}
+
+/* Hide carousel at specific breakpoints */
+@media (max-width: 1200px) {
+  .carousel-wrapper {
+    display: none !important;
+  }
+}
+
+/* Make sure touch devices don't break the animation */
+.touch-device .nav-link::after {
+  transition: width 0.3s ease !important;
+}
+
+.touch-device .nav-link:hover::after {
+  width: 100% !important;
+}
