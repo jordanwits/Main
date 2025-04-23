@@ -25,9 +25,10 @@ export function ContactForm() {
         form?.reset()
       }
     } catch (error) {
+      console.error("Form submission error:", error)
       setFormStatus({
         success: false,
-        message: "An unexpected error occurred. Please try again.",
+        message: "An unexpected error occurred. Please try again or contact me directly at jordanwitbeck17@gmail.com",
       })
     } finally {
       setIsSubmitting(false)

@@ -28,36 +28,51 @@ export async function submitContactForm(formData: FormData) {
       }
     }
 
-    // Configure nodemailer transporter
-    // Note: For production, you should use a proper email service
-    // This is a simple configuration for demonstration
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER || "your-email@gmail.com", // Replace with your email or use env variable
-        pass: process.env.EMAIL_PASS || "your-app-password", // Use app password for Gmail
-      },
-    })
+    // Check if we're in a preview environment (Vercel preview or local development)
+    const isPreview = process.env.VERCEL_ENV === "preview" || process.env.NODE_ENV === "development"
 
-    // Create email content
-    const mailOptions = {
-      from: `"${firstName} ${lastName}" <${email}>`,
-      to: "jordanwitbeck17@gmail.com",
-      subject: `New Contact Form Submission from ${firstName} ${lastName}`,
-      html: `
-        <h1>New Contact Form Submission</h1>
-        <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Company:</strong> ${company || "Not provided"}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br>")}</p>
-      `,
+    if (isPreview) {
+      // In preview mode, just log the form data and return success
+      console.log("Form submission in preview mode:", {
+        firstName,
+        lastName,
+        email,
+        company,
+        message,
+      })
+
+      return {
+        success: true,
+        message: "Your message has been received! (Preview Mode - Email not actually sent)",
+      }
+    } else {
+      // In production, use nodemailer to send the actual email
+      const transporter = nodemailer.createTransport({
+        service: "gmail", // Using the service option instead of host/port
+        auth: {
+          user: process.env.EMAIL_USER || "your-email@gmail.com",
+          pass: process.env.EMAIL_PASS || "your-app-password",
+        },
+      })
+
+      // Create email content
+      const mailOptions = {
+        from: `"${firstName} ${lastName}" <${email}>`,
+        to: "jordanwitbeck17@gmail.com",
+        subject: `New Contact Form Submission from ${firstName} ${lastName}`,
+        html: `
+          <h1>New Contact Form Submission</h1>
+          <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Company:</strong> ${company || "Not provided"}</p>
+          <p><strong>Message:</strong></p>
+          <p>${message.replace(/\n/g, "<br>")}</p>
+        `,
+      }
+
+      // Send email
+      await transporter.sendMail(mailOptions)
     }
-
-    // Send email
-    await transporter.sendMail(mailOptions)
 
     return {
       success: true,
