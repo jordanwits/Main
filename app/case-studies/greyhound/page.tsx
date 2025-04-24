@@ -181,12 +181,13 @@ const AppScreenMockup = ({
   )
 }
 
-// Non-interactive video player component that plays every time it animates into view
+// Non-interactive video player component that plays once each time it animates into view
 const VideoPlayer = ({ className = "" }: { className?: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef(null)
   const [hasError, setHasError] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [videoEnded, setVideoEnded] = useState(false)
 
   // Use a more sensitive threshold to detect when the video is in view
   const isInView = useInView(containerRef, {
@@ -194,20 +195,40 @@ const VideoPlayer = ({ className = "" }: { className?: string }) => {
     once: false, // Don't trigger only once, so we can handle leaving/entering view
   })
 
+  // Function to safely stop the video and prevent looping
+  const stopVideo = () => {
+    if (videoRef.current) {
+      console.log("Stopping video")
+      videoRef.current.pause()
+      setIsPlaying(false)
+      setVideoEnded(true)
+    }
+  }
+
+  // Handle video ended event
+  const handleVideoEnded = () => {
+    console.log("Video ended event triggered")
+    stopVideo()
+  }
+
   // Reset and play video when it comes into view
   useEffect(() => {
-    if (isInView && videoRef.current && !isPlaying) {
+    if (isInView && videoRef.current && !isPlaying && !videoEnded) {
       console.log("Video in view, resetting and playing")
 
       // Reset the video to the beginning
       if (videoRef.current) {
         videoRef.current.currentTime = 0
 
+        // Explicitly set loop to false
+        videoRef.current.loop = false
+
         // Add a small delay to ensure DOM is ready
         const playTimer = setTimeout(() => {
           if (videoRef.current) {
             // Set playing state
             setIsPlaying(true)
+            setVideoEnded(false)
 
             // Attempt to play
             const playPromise = videoRef.current.play()
@@ -231,26 +252,38 @@ const VideoPlayer = ({ className = "" }: { className?: string }) => {
       }
     }
 
-    // When video leaves view, reset playing state
-    if (!isInView && isPlaying) {
+    // When video leaves view completely, reset states
+    if (!isInView) {
       console.log("Video out of view, resetting state")
       setIsPlaying(false)
+      setVideoEnded(false)
     }
-  }, [isInView, isPlaying])
+  }, [isInView, isPlaying, videoEnded])
 
-  // Listen for video end to reset playing state
+  // Set up event listeners for the video
   useEffect(() => {
     const video = videoRef.current
 
-    const handleEnded = () => {
-      console.log("Video ended")
-      setIsPlaying(false)
-    }
-
     if (video) {
-      video.addEventListener("ended", handleEnded)
+      // Remove any existing event listeners to avoid duplicates
+      video.removeEventListener("ended", handleVideoEnded)
+
+      // Add event listeners
+      video.addEventListener("ended", handleVideoEnded)
+
+      // Set up a timeupdate listener to check if we're near the end
+      const handleTimeUpdate = () => {
+        if (video.currentTime >= video.duration - 0.1) {
+          console.log("Video near end, stopping")
+          stopVideo()
+        }
+      }
+
+      video.addEventListener("timeupdate", handleTimeUpdate)
+
       return () => {
-        video.removeEventListener("ended", handleEnded)
+        video.removeEventListener("ended", handleVideoEnded)
+        video.removeEventListener("timeupdate", handleTimeUpdate)
       }
     }
   }, [])
@@ -283,23 +316,29 @@ const VideoPlayer = ({ className = "" }: { className?: string }) => {
           </p>
         </div>
       ) : (
-        <video
-          ref={videoRef}
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Phone-screens-%5Bremix%5D-%5Bcopy%5D-gR1QrUVd3JUmA67wgius8UBYf9JvmV.mp4"
-          className={className}
-          playsInline
-          muted
-          loop={false}
-          controls={false}
-          onError={handleVideoError}
-          poster="/images/greyhound/booking-display.png"
-          style={{
-            pointerEvents: "none", // Ensure video is not interactive
-            userSelect: "none", // Prevent selection
-            width: "100%",
-            height: "auto",
-          }}
-        />
+        <>
+          <video
+            ref={videoRef}
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Phone-screens-%5Bremix%5D-%5Bcopy%5D-gR1QrUVd3JUmA67wgius8UBYf9JvmV.mp4"
+            className={className}
+            playsInline
+            muted
+            loop={false}
+            controls={false}
+            onError={handleVideoError}
+            onEnded={handleVideoEnded}
+            poster="/images/greyhound/booking-display.png"
+            style={{
+              pointerEvents: "none", // Ensure video is not interactive
+              userSelect: "none", // Prevent selection
+              width: "100%",
+              height: "auto",
+            }}
+          />
+
+          {/* Add a transparent overlay to catch any click events that might trigger play/pause */}
+          <div className="absolute inset-0" style={{ pointerEvents: "none" }}></div>
+        </>
       )}
     </div>
   )
