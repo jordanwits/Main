@@ -1,51 +1,48 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Disable scroll restoration completely
-  // This will make Next.js not try to restore scroll position
   experimental: {
     scrollRestoration: false,
-    // Completely disable SWC
-    forceSwcTransforms: false,
-    // Use Babel for all transformations
-    esmExternals: true,
   },
-  // Added configuration to fix deployment errors
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Skip type checking and linting during build
   typescript: {
+    // Completely skip type checking
     ignoreBuildErrors: true,
   },
+  eslint: {
+    // Completely skip ESLint during build
+    ignoreDuringBuilds: true,
+  },
+  // Disable image optimization to simplify build
   images: {
     unoptimized: true,
+    // Allow all domains for images
+    domains: ['*'],
   },
-  // Disable SWC minification
-  swcMinify: false,
   // Disable React strict mode to avoid potential issues
   reactStrictMode: false,
-  // Add webpack configuration to handle JSX namespaces
-  webpack: (config, { isServer }) => {
-    // Add a rule to handle JSX files with a custom loader
-    config.module.rules.push({
-      test: /\.(js|jsx|ts|tsx)$/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            ['next/babel', {
-              'preset-react': {
-                runtime: 'automatic',
-                importSource: 'react',
-                throwIfNamespace: false
-              }
-            }]
-          ]
-        }
-      }
-    });
-    
-    return config;
-  }
+  // Disable SWC minification
+  swcMinify: false,
+  // Disable source maps in production
+  productionBrowserSourceMaps: false,
+  // Disable font optimization
+  optimizeFonts: false,
+  // Disable automatic static optimization
+  staticPageGenerationTimeout: 1000,
+  // Disable compression
+  compress: false,
+  // Disable powered by header
+  poweredByHeader: false,
+  // Disable trailing slash
+  trailingSlash: false,
+  // Disable asset prefix
+  assetPrefix: '',
+  // Disable basePath
+  basePath: '',
+  // Disable distDir
+  distDir: '.next',
+  // Disable pageExtensions
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
 };
 
 export default nextConfig;
