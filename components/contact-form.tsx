@@ -30,13 +30,14 @@ export function ContactForm() {
 
       <div className="flex flex-col space-y-4">
         <Button
-          as="a"
-          href={mailtoLink}
+          asChild
           className="w-full h-14 button-primary text-lg font-medium flex items-center justify-center"
           style={{ backgroundColor: "#FFD166", color: "#1b1b1b" }}
         >
-          SEND EMAIL
-          <Mail className="ml-2 h-5 w-5" />
+          <a href={`mailto:jordanwitbeck17@gmail.com`}>
+            SEND EMAIL
+            <Mail className="ml-2 h-5 w-5" />
+          </a>
         </Button>
 
         <div className="relative">

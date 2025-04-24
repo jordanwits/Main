@@ -264,8 +264,9 @@ export default function FindersKeepersCase() {
                 Finders Keepers Development
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
-                Finders keepers aims to bring light to garage sales that go unnoticed everyday. Before me, there were no
-                high quality apps that provided this service.
+                A complete mobile app development project that brings light to garage sales that go unnoticed everyday.
+                The first high-quality app in this niche, creating an intuitive platform for treasure hunters and
+                sellers.
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 <span className="px-3 py-1 rounded-full text-sm bg-[#FFD166]/10 text-[#FFD166]">Brand Identity</span>
@@ -639,8 +640,8 @@ export default function FindersKeepersCase() {
           </div>
 
           <FigmaPrototype
-            embedUrl="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMhttps://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMlarSyWMU9%2FUntitled%3Fpage-embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMlarSyWMU9%2FUntitled%3Fpage-id%3D0%253A1%26node-id%3D2-1270%26viewport%3D254%252C87%252C0.24%26t%3DWYp91JKK6qeuOknx-1%26scaling%3Dscale-down%26content-scaling%3Dfixed%26starting-point-node-id%3D2%253A1270"
-            title="Finders Keepers App Interactive Prototype"
+            embedUrl="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAHembedUrl="
+            https:title="Finders Keepers App Interactive Prototype" //www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMhttps://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMlarSyWMU9%2FUntitled%3Fpage-embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMlarSyWMU9%2FUntitled%3Fpage-id%3D0%253A1%26node-id%3D2-1270%26viewport%3D254%252C87%252C0.24%26t%3DWYp91JKK6qeuOknx-1%26scaling%3Dscale-down%26content-scaling%3Dfixed%26starting-point-node-id%3D2%253A1270"
             height="700px"
             fallbackImageUrl="https://sjc.microlink.io/x-QKhUyZkaFQgAGfDabZyQFJsNI6NxsAfTJx75oLKik-gMmB8AT_UKVmtg-Az0jvYYIjRKMeSf9WPZ02ztl6lA.jpeg"
           />

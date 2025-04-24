@@ -294,7 +294,7 @@ export default function GreyhoundCase() {
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
                 A comprehensive mobile app redesign for Greyhound bus services, improving the booking experience with an
-                intuitive interface that increased conversion rates by 32%.
+                intuitive interface that improved checkout efficiency by 20% and enhanced the overall user experience.
               </p>
               <div className="flex flex-wrap gap-4 mb-8">
                 <span className="px-3 py-1 rounded-full text-sm bg-[#FFD166]/10 text-[#FFD166]">UX Research</span>
@@ -642,6 +642,12 @@ export default function GreyhoundCase() {
             <AppScreenMockup
               src="/images/greyhound/booking-display.png"
               alt="Greyhound booking screen"
+              title="Simplified Booking"
+              description="Streamlined booking process with an intuitive form and map-based interface that makes finding routes easy and efficient."
+            />
+
+            <AppScreenMockup
+              src="/images/greyhound/results-display.png"
               title="Simplified Booking"
               description="Streamlined booking process with an intuitive form and map-based interface that makes finding routes easy and efficient."
             />
