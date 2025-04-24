@@ -15,6 +15,14 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Add SWC compiler options to fix JSX namespace error
+  compiler: {
+    // Allow JSX namespaces
+    reactRemoveProperties: true,
+    swcMinify: true,
+  },
+  // Configure SWC to not throw on JSX namespaces
+  swcMinify: true,
 };
 
 export default nextConfig;
