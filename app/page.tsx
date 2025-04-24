@@ -942,9 +942,9 @@ export default function LandingPage() {
           ref={contactRef}
           className="w-full py-24 md:py-32 contact-gradient overflow-visible relative"
         >
-          <div className="container max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+          <div className="container max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12">
             <div
-              className={`grid gap-16 lg:grid-cols-[1.2fr_0.8fr] transition-all duration-1000 ease-in-out overflow-visible fade-in-up ${shouldAnimate(isContactInView) ? "visible" : ""}`}
+              className={`grid gap-8 lg:grid-cols-[0.8fr_1.2fr] transition-all duration-1000 ease-in-out overflow-visible fade-in-up ${shouldAnimate(isContactInView) ? "visible" : ""}`}
             >
               <div className="pr-0 md:pr-12">
                 <h2

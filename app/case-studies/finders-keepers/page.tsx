@@ -639,7 +639,8 @@ export default function FindersKeepersCase() {
           </div>
 
           <FigmaPrototype
-            embedUrl="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMhttps://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMlarSyWMU9%2FUntitled%3Fpage-embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMlarSyWMU9%2FUntitled%3Fpage-id%3D0%253A1%26node-id%3D2-1270%26viewport%3D254%252C87%252C0.24%26t%3DWYp91JKK6qeuOknx-1%26scaling%3Dscale-down%26content-scaling%3Dfixed%26starting-point-node-id%3D2%253A1270"
+            embedUrl="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcM\`\`\`xml
+https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMlarSyWMU9%2FUntitled%3Fpage-embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FG9nAH5bItZlcMlarSyWMU9%2FUntitled%3Fpage-id%3D0%253A1%26node-id%3D2-1270%26viewport%3D254%252C87%252C0.24%26t%3DWYp91JKK6qeuOknx-1%26scaling%3Dscale-down%26content-scaling%3Dfixed%26starting-point-node-id%3D2%253A1270"
             title="Finders Keepers App Interactive Prototype"
             height="700px"
             fallbackImageUrl="https://sjc.microlink.io/x-QKhUyZkaFQgAGfDabZyQFJsNI6NxsAfTJx75oLKik-gMmB8AT_UKVmtg-Az0jvYYIjRKMeSf9WPZ02ztl6lA.jpeg"
@@ -699,9 +700,9 @@ export default function FindersKeepersCase() {
           ref={contactRef}
           className="w-full py-24 md:py-32 contact-gradient overflow-visible relative"
         >
-          <div className="container max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24">
+          <div className="container max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12">
             <div
-              className={`grid gap-16 lg:grid-cols-[1.2fr_0.8fr] transition-all duration-1000 ease-in-out overflow-visible fade-in-up ${shouldAnimate(isContactInView) ? "visible" : ""}`}
+              className={`grid gap-8 lg:grid-cols-[0.8fr_1.2fr] transition-all duration-1000 ease-in-out overflow-visible fade-in-up ${shouldAnimate(isContactInView) ? "visible" : ""}`}
             >
               <div className="pr-0 md:pr-12">
                 <h2

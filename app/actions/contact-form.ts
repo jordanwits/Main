@@ -28,6 +28,15 @@ export async function submitContactForm(formData: FormData) {
       }
     }
 
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return {
+        success: false,
+        message: "Please enter a valid email address",
+      }
+    }
+
     // Check if we're in a preview environment (Vercel preview or local development)
     const isPreview = process.env.VERCEL_ENV === "preview" || process.env.NODE_ENV === "development"
 
@@ -59,8 +68,6 @@ export async function submitContactForm(formData: FormData) {
         }
       }
 
-      // Create a test account if needed (for development)
-      let testAccount
       let transporter
 
       try {
@@ -89,19 +96,24 @@ export async function submitContactForm(formData: FormData) {
         }
       }
 
-      // Create email content
+      // Create email content with improved formatting
       const mailOptions = {
         from: `"Contact Form" <${emailUser}>`, // Use your own email as the sender
         replyTo: `"${firstName} ${lastName}" <${email}>`, // Set reply-to as the form submitter
-        to: "jordanwitbeck17@gmail.com",
+        to: "jordanwitbeck17@gmail.com", // Destination email address
         subject: `New Contact Form Submission from ${firstName} ${lastName}`,
         html: `
-          <h1>New Contact Form Submission</h1>
-          <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Company:</strong> ${company || "Not provided"}</p>
-          <p><strong>Message:</strong></p>
-          <p>${message.replace(/\n/g, "<br>")}</p>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;">
+            <h1 style="color: #333; border-bottom: 1px solid #e0e0e0; padding-bottom: 10px;">New Contact Form Submission</h1>
+            <p><strong>Name:</strong> ${firstName} ${lastName}</p>
+            <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+            <p><strong>Company:</strong> ${company || "Not provided"}</p>
+            <h2 style="color: #333; margin-top: 20px;">Message:</h2>
+            <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin-top: 10px;">
+              ${message.replace(/\n/g, "<br>")}
+            </div>
+            <p style="margin-top: 20px; font-size: 12px; color: #777;">This message was sent from the contact form on your website.</p>
+          </div>
         `,
       }
 
