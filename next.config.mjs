@@ -15,8 +15,18 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Disable SWC to use Babel instead
-  swcMinify: false,
+  // Re-enable SWC and configure it properly
+  swcMinify: true,
+  compiler: {
+    // Remove properties during compilation
+    removeProperties: true,
+    // Configure JSX transformation
+    react: {
+      runtime: "automatic",
+      // This is the key setting for JSX namespaces
+      throwIfNamespace: false
+    }
+  }
 };
 
 export default nextConfig;
