@@ -852,7 +852,8 @@ export default function LandingPage() {
                 FEATURED PROJECTS
               </h2>
               <p className="text-xl text-muted-foreground max-w-2xl">
-                Explore my portfolio of award-winning designs that have helped businesses achieve their goals.
+                Explore my portfolio of impactful designs that have helped businesses achieve their goals and enhance
+                user experiences.
               </p>
             </div>
 
