@@ -15,12 +15,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Add specific SWC compiler options to fix JSX namespace error
-  swcMinify: true,
-  compiler: {
-    // Specifically configure JSX namespace handling
-    styledComponents: true,
-  },
+  // Disable SWC to use Babel instead
+  swcMinify: false,
 };
 
 export default nextConfig;
