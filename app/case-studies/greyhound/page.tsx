@@ -319,7 +319,7 @@ const VideoPlayer = ({ className = "" }: { className?: string }) => {
         <>
           <video
             ref={videoRef}
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Phone-screens-%5Bremix%5D-%5Bcopy%5D-gR1QrUVd3JUmA67wgius8UBYf9JvmV.mp4"
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Phone-screens-%5Bremix%5D-%5Bcopy%5D-qzLYd0dXxdShDU01rdhecm46kiy6V3.mp4"
             className={className}
             playsInline
             muted
