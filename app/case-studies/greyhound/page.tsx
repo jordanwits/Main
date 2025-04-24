@@ -189,17 +189,67 @@ const VideoPlayer = ({ src, className = "" }: { src: string; className?: string 
     amount: 0.3,
     once: false,
   })
+  const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
     if (isInView && videoRef.current) {
+      // Try to play the video when in view
       videoRef.current.currentTime = 0
-      videoRef.current.play()
+      const playPromise = videoRef.current.play()
+
+      // Handle play promise rejection (common in some browsers)
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.error("Video play error:", error)
+          setHasError(true)
+        })
+      }
     }
   }, [isInView])
 
+  // Handle video error
+  const handleVideoError = () => {
+    console.error("Video failed to load")
+    setHasError(true)
+  }
+
   return (
     <div ref={containerRef} className="w-full h-full flex items-center justify-center bg-black">
-      <video ref={videoRef} src={src} className={className} playsInline muted loop={false} controls={false} />
+      {hasError ? (
+        // Fallback content when video fails to load
+        <div className="p-6 text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-10 w-10 mx-auto mb-4 text-[#FFD166]"
+          >
+            <path d="m10 9 5 3-5 3z"></path>
+            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+          </svg>
+          <p className="text-muted-foreground">
+            Video preview unavailable. Please view the interactive prototype below for a complete demonstration.
+          </p>
+        </div>
+      ) : (
+        <video
+          ref={videoRef}
+          src={src}
+          className={className}
+          playsInline
+          muted
+          loop={false}
+          controls={true}
+          onError={handleVideoError}
+          poster="/images/greyhound/booking-display.png"
+        />
+      )}
     </div>
   )
 }
