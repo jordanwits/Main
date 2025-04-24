@@ -181,73 +181,124 @@ const AppScreenMockup = ({
   )
 }
 
-// Video player component that plays once when in view
-const VideoPlayer = ({ src, className = "" }: { src: string; className?: string }) => {
+// Non-interactive video player component that plays every time it animates into view
+const VideoPlayer = ({ className = "" }: { className?: string }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef(null)
-  const isInView = useInView(containerRef, {
-    amount: 0.3,
-    once: false,
-  })
   const [hasError, setHasError] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
 
+  // Use a more sensitive threshold to detect when the video is in view
+  const isInView = useInView(containerRef, {
+    amount: 0.3, // Trigger when 30% of the component is visible
+    once: false, // Don't trigger only once, so we can handle leaving/entering view
+  })
+
+  // Reset and play video when it comes into view
   useEffect(() => {
-    if (isInView && videoRef.current) {
-      // Try to play the video when in view
-      videoRef.current.currentTime = 0
-      const playPromise = videoRef.current.play()
+    if (isInView && videoRef.current && !isPlaying) {
+      console.log("Video in view, resetting and playing")
 
-      // Handle play promise rejection (common in some browsers)
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.error("Video play error:", error)
-          setHasError(true)
-        })
+      // Reset the video to the beginning
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0
+
+        // Add a small delay to ensure DOM is ready
+        const playTimer = setTimeout(() => {
+          if (videoRef.current) {
+            // Set playing state
+            setIsPlaying(true)
+
+            // Attempt to play
+            const playPromise = videoRef.current.play()
+
+            // Handle play promise rejection (common in some browsers)
+            if (playPromise !== undefined) {
+              playPromise
+                .then(() => {
+                  console.log("Video playing successfully")
+                })
+                .catch((error) => {
+                  console.error("Video play error:", error)
+                  setHasError(true)
+                  setIsPlaying(false)
+                })
+            }
+          }
+        }, 100)
+
+        return () => clearTimeout(playTimer)
       }
     }
-  }, [isInView])
+
+    // When video leaves view, reset playing state
+    if (!isInView && isPlaying) {
+      console.log("Video out of view, resetting state")
+      setIsPlaying(false)
+    }
+  }, [isInView, isPlaying])
+
+  // Listen for video end to reset playing state
+  useEffect(() => {
+    const video = videoRef.current
+
+    const handleEnded = () => {
+      console.log("Video ended")
+      setIsPlaying(false)
+    }
+
+    if (video) {
+      video.addEventListener("ended", handleEnded)
+      return () => {
+        video.removeEventListener("ended", handleEnded)
+      }
+    }
+  }, [])
 
   // Handle video error
   const handleVideoError = () => {
     console.error("Video failed to load")
     setHasError(true)
+    setIsPlaying(false)
   }
 
   return (
-    <div ref={containerRef} className="w-full h-full flex items-center justify-center bg-black">
+    <div
+      ref={containerRef}
+      className="w-full h-full flex items-center justify-center bg-black relative"
+      style={{ pointerEvents: "none" }} // Disable all pointer events
+    >
       {hasError ? (
         // Fallback content when video fails to load
         <div className="p-6 text-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-10 w-10 mx-auto mb-4 text-[#FFD166]"
-          >
-            <path d="m10 9 5 3-5 3z"></path>
-            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-          </svg>
-          <p className="text-muted-foreground">
-            Video preview unavailable. Please view the interactive prototype below for a complete demonstration.
+          <Image
+            src="/images/greyhound/booking-display.png"
+            alt="Greyhound app interface showcase"
+            width={600}
+            height={1200}
+            className="w-full h-auto"
+          />
+          <p className="text-muted-foreground mt-4">
+            See the full interactive experience in the prototype section below.
           </p>
         </div>
       ) : (
         <video
           ref={videoRef}
-          src={src}
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Phone-screens-%5Bremix%5D-%5Bcopy%5D-gR1QrUVd3JUmA67wgius8UBYf9JvmV.mp4"
           className={className}
           playsInline
           muted
           loop={false}
-          controls={true}
+          controls={false}
           onError={handleVideoError}
           poster="/images/greyhound/booking-display.png"
+          style={{
+            pointerEvents: "none", // Ensure video is not interactive
+            userSelect: "none", // Prevent selection
+            width: "100%",
+            height: "auto",
+          }}
         />
       )}
     </div>
@@ -620,7 +671,7 @@ export default function GreyhoundCase() {
 
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             <div className="overflow-hidden rounded-lg border border-border/30 bg-card/50">
-              <VideoPlayer src="/videos/Phone-screens-remix-copy.mp4" className="w-full h-auto" />
+              <VideoPlayer className="w-full h-auto" />
             </div>
             <div className="flex flex-col justify-center">
               <h3 className="text-2xl font-bold mb-4">Key Features</h3>
