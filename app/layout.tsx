@@ -21,6 +21,28 @@ const stixTwoText = STIX_Two_Text({
 export const metadata: Metadata = {
   title: "Jordan Witbeck Designs | UI/UX Design Studio",
   description: "UI/UX Design Studio for Digital Products. We craft digital experiences that inspire.",
+  openGraph: {
+    title: "Jordan Witbeck Designs | UI/UX Design Studio",
+    description:
+      "I design intuitive interfaces and seamless user experiences that elevate your brand and delight your users.",
+    images: [
+      {
+        url: "/website-cover-jwd.png",
+        width: 1200,
+        height: 630,
+        alt: "Jordan Witbeck Designs - Thoughtful Design Tailored To You",
+      },
+    ],
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Jordan Witbeck Designs | UI/UX Design Studio",
+    description:
+      "I design intuitive interfaces and seamless user experiences that elevate your brand and delight your users.",
+    images: ["/website-cover-jwd.png"],
+  },
     generator: 'v0.dev'
 }
 
