@@ -1,15 +1,7 @@
 "use server"
 
-import nodemailer from "nodemailer"
-
-// Form input type
-type ContactFormInput = {
-  firstName: string
-  lastName: string
-  email: string
-  company: string
-  message: string
-}
+// This is a server action that handles the contact form submission
+// It will send an email to the website owner when someone submits the form
 
 export async function submitContactForm(formData: FormData) {
   try {
@@ -37,101 +29,47 @@ export async function submitContactForm(formData: FormData) {
       }
     }
 
-    // Check if we're in a preview environment (Vercel preview or local development)
-    const isPreview = process.env.VERCEL_ENV === "preview" || process.env.NODE_ENV === "development"
+    // Prepare the form data for submission
+    const formDataToSubmit = {
+      firstName,
+      lastName,
+      email,
+      company: company || "Not provided",
+      message,
+      subject: `New Contact Form Submission from ${firstName} ${lastName}`,
+    }
 
-    if (isPreview) {
-      // In preview mode, just log the form data and return success
-      console.log("Form submission in preview mode:", {
-        firstName,
-        lastName,
-        email,
-        company,
-        message,
-      })
+    // Send the form data to the email service
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        access_key: process.env.WEB3FORMS_ACCESS_KEY!, // Using the environment variable
+        from_name: `${firstName} ${lastName}`,
+        subject: `New Contact Form Submission from ${firstName} ${lastName}`,
+        reply_to: email,
+        name: `${firstName} ${lastName}`,
+        email: email,
+        company: company || "Not provided",
+        message: message,
+      }),
+    })
 
+    const result = await response.json()
+
+    if (result.success) {
       return {
         success: true,
-        message: "Your message has been received! (Preview Mode - Email not actually sent)",
+        message: "Your message has been sent successfully!",
       }
     } else {
-      // In production, use nodemailer to send the actual email
-      // Check if environment variables are set
-      const emailUser = process.env.EMAIL_USER
-      const emailPass = process.env.EMAIL_PASS
-
-      if (!emailUser || !emailPass) {
-        console.error("Missing email credentials. EMAIL_USER or EMAIL_PASS environment variables are not set.")
-        return {
-          success: false,
-          message: "Server configuration error. Please contact the administrator.",
-        }
-      }
-
-      let transporter
-
-      try {
-        // Configure nodemailer with Gmail
-        transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            user: emailUser,
-            pass: emailPass,
-          },
-          // Add debug option to see detailed logs
-          debug: true,
-          // Increase timeout
-          connectionTimeout: 10000,
-        })
-
-        // Verify the connection
-        await transporter.verify()
-        console.log("SMTP connection verified successfully")
-      } catch (smtpError) {
-        console.error("SMTP connection error:", smtpError)
-        return {
-          success: false,
-          message:
-            "Failed to connect to email server. Please try again later or contact me directly at jordanwitbeck17@gmail.com",
-        }
-      }
-
-      // Create email content with improved formatting
-      const mailOptions = {
-        from: `"Contact Form" <${emailUser}>`, // Use your own email as the sender
-        replyTo: `"${firstName} ${lastName}" <${email}>`, // Set reply-to as the form submitter
-        to: "jordanwitbeck17@gmail.com", // Destination email address
-        subject: `New Contact Form Submission from ${firstName} ${lastName}`,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;">
-            <h1 style="color: #333; border-bottom: 1px solid #e0e0e0; padding-bottom: 10px;">New Contact Form Submission</h1>
-            <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-            <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-            <p><strong>Company:</strong> ${company || "Not provided"}</p>
-            <h2 style="color: #333; margin-top: 20px;">Message:</h2>
-            <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin-top: 10px;">
-              ${message.replace(/\n/g, "<br>")}
-            </div>
-            <p style="margin-top: 20px; font-size: 12px; color: #777;">This message was sent from the contact form on your website.</p>
-          </div>
-        `,
-      }
-
-      try {
-        // Send email
-        const info = await transporter.sendMail(mailOptions)
-        console.log("Message sent successfully:", info.messageId)
-
-        return {
-          success: true,
-          message: "Your message has been sent successfully!",
-        }
-      } catch (sendError) {
-        console.error("Error sending email:", sendError)
-        return {
-          success: false,
-          message: "Failed to send message. Please try again later or contact me directly at jordanwitbeck17@gmail.com",
-        }
+      console.error("Error submitting form:", result)
+      return {
+        success: false,
+        message: "Failed to send message. Please try again later or contact me directly at jordanwitbeck17@gmail.com",
       }
     }
   } catch (error) {

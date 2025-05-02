@@ -251,7 +251,7 @@ export default function FindersKeepersCase() {
           className="w-full py-24 md:py-32 lg:py-40 overflow-hidden relative"
           style={{
             backgroundImage:
-              "linear-gradient(to right, rgba(27, 27, 27, 0.9), rgba(27, 27, 27, 0.7)), url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%20350-fvYAuNVRGpad9LT56C8UCYhDa18bM4.png')",
+              "linear-gradient(to right, rgba(27, 27, 27, 0.7), rgba(27, 27, 27, 0.5)), url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Frame%20350-fvYAuNVRGpad9LT56C8UCYhDa18bM4.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -263,7 +263,7 @@ export default function FindersKeepersCase() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal mb-6">
                 Finders Keepers Development
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
+              <p className="text-xl mb-8" style={{ color: "#f2f2f2" }}>
                 Finders keepers aims to bring light to garage sales that go unnoticed everyday. Before me, there were no
                 high quality apps that provided this service.
               </p>

@@ -327,9 +327,9 @@ export default function GreyhoundCase() {
               fill
               priority
               className="object-cover"
-              style={{ opacity: 0.4 }}
+              style={{ opacity: 0.6 }}
             />
-            <div className="absolute inset-0 bg-[#1b1b1b]/40" />
+            <div className="absolute inset-0 bg-[#1b1b1b]/20" /> {/* Reduced from 40% to 30% (10% lighter) */}
           </div>
           {/* Rest of the content */}
           <div className="container max-w-[1400px] mx-auto px-8 md:px-16 lg:px-24 relative z-10">
@@ -338,7 +338,7 @@ export default function GreyhoundCase() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-normal mb-6">
                 Greyhound Mobile App Redesign
               </h1>
-              <p className="text-xl text-muted-foreground mb-8">
+              <p className="text-xl mb-8" style={{ color: "#f2f2f2" }}>
                 A comprehensive mobile app redesign for Greyhound bus services, improving the booking experience with an
                 intuitive interface that improved checkout efficiency by 20% and enhanced the overall user experience.
               </p>

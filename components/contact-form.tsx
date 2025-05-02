@@ -17,12 +17,39 @@ export function ContactForm() {
     setFormStatus(null)
 
     try {
+      // First try the server action
       const result = await submitContactForm(formData)
-      setFormStatus(result)
+
+      // If server action fails, try the API route as fallback
+      if (!result.success) {
+        // Convert FormData to a plain object
+        const formDataObj = {
+          firstName: formData.get("firstName") as string,
+          lastName: formData.get("lastName") as string,
+          email: formData.get("email") as string,
+          company: formData.get("company") as string,
+          message: formData.get("message") as string,
+        }
+
+        // Call the API route
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formDataObj),
+        })
+
+        const apiResult = await response.json()
+        setFormStatus(apiResult)
+      } else {
+        setFormStatus(result)
+      }
     } catch (error) {
+      console.error("Error submitting form:", error)
       setFormStatus({
         success: false,
-        message: "Something went wrong. Please try again or email me directly.",
+        message: "Something went wrong. Please try again or email me directly at jordanwitbeck17@gmail.com",
       })
     } finally {
       setIsSubmitting(false)
